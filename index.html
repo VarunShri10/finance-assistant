@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.json">
+<title>Finance Assistant</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#182230;background:#f5f7fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1050px;margin:auto;padding:20px}.hero{background:#172554;color:white;border-radius:18px;padding:24px}.hero h1{margin:0 0 8px;font-size:26px}.hero p{margin:0;color:#dbeafe}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:16px 0}.card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:17px}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field label{font-size:13px;color:#475569;font-weight:650}input,select,textarea,button{font:inherit;border-radius:9px;padding:10px;border:1px solid #cbd5e1;max-width:100%}input,select,textarea{width:100%}button{background:#1d4ed8;color:white;border:0;font-weight:650;cursor:pointer}button.secondary{background:#e2e8f0;color:#1e293b}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>*{flex:1;min-width:145px}.result{background:#eff6ff;border:1px solid #bfdbfe;padding:14px;border-radius:12px;margin-top:12px}.muted,.notice{color:#64748b}.small,.notice{font-size:12px;line-height:1.5}.metric{font-size:23px;font-weight:750;margin-top:5px}.pill{display:inline-block;background:#e0e7ff;color:#3730a3;padding:4px 9px;border-radius:99px;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:9px;border-bottom:1px solid #e2e8f0;font-size:13px}details{margin-top:12px}@media(max-width:600px){.wrap{padding:12px}.hero h1{font-size:22px}}
+</style></head>
+<body><main class="wrap">
+<header class="hero"><span class="pill">Private • Local-first</span><h1>Finance Assistant</h1><p>Review your savings, plan expenses, and estimate the impact of a purchase.</p></header>
+<section class="grid">
+<div class="card"><div class="muted small">Current available savings (₹)</div><div class="metric" id="metricSavings">₹0</div></div>
+<div class="card"><div class="muted small">Marriage / goal budget (₹)</div><div class="metric" id="metricBudget">₹0</div></div>
+<div class="card"><div class="muted small">Outstanding commitments (₹)</div><div class="metric" id="metricPending">₹0</div></div>
+</section>
+<section class="card">
+<h2>Your financial snapshot</h2><p class="muted small">Enter your own figures. This section is saved only in this browser on this device.</p>
+<div class="row">
+<div class="field"><label for="savings">Available savings (₹)</label><input id="savings" type="number" min="0" step="1" placeholder="Enter current savings"></div>
+<div class="field"><label for="budget">Total budget / goal amount (₹)</label><input id="budget" type="number" min="0" step="1" placeholder="Optional"></div>
+<div class="field"><label for="actual">Actual expenses so far (₹)</label><input id="actual" type="number" min="0" step="1" placeholder="Optional"></div>
+<div class="field"><label for="paid">Payments already made (₹)</label><input id="paid" type="number" min="0" step="1" placeholder="Optional"></div>
+<div class="field"><label for="pending">Unpaid commitments to reserve (₹)</label><input id="pending" type="number" min="0" step="1" placeholder="Optional"></div>
+<div class="field"><label for="buffer">Minimum savings buffer (₹)</label><input id="buffer" type="number" min="0" step="1" placeholder="Optional"></div>
+</div>
+<div class="actions"><button id="saveData">Save snapshot</button><button class="secondary" id="export">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input id="importFile" type="file" accept="application/json" hidden></div>
+<p class="notice">Privacy: this app does not send your figures to a server. However, browser storage is not encrypted, and anyone using the same device/browser profile may be able to access it. Do not enter bank passwords, card numbers, or other credentials.</p>
+</section>
+<section class="card" style="margin-top:16px">
+<h2>Can I afford this purchase?</h2>
+<div class="row">
+<div class="field"><label for="amount">Planned purchase (₹)</label><input id="amount" type="number" min="0" value="0"></div>
+<div class="field"><label for="future">Additional savings before purchase (₹)</label><input id="future" type="number" min="0" value="0"></div>
+<div class="field"><label for="reserve">Other commitments to reserve (₹)</label><input id="reserve" type="number" min="0" value="0"></div>
+</div><button id="calc">Calculate impact</button><div class="result" id="calcResult" aria-live="polite">Enter your figures and calculate.</div>
+</section>
+<section class="card" style="margin-top:16px">
+<h2>Ask your Finance Assistant</h2><p class="muted small">Answers use the figures you entered here. This is a rule-based offline helper, not a full conversational AI or financial adviser.</p>
+<div class="field"><label for="question">Your question</label><textarea id="question" rows="3" placeholder="Example: Can I spend ₹25,000 and still keep my buffer?"></textarea></div>
+<div class="actions"><button id="ask">Ask question</button><button class="secondary" id="clear">Clear</button></div>
+<div class="result" id="answer" aria-live="polite">Try asking about your savings, budget, expenses, pending payments, or a purchase.</div>
+</section>
+<details class="card"><summary><b>How this app works</b></summary><p class="notice">Your figures are stored in local browser storage. They do not sync across devices and are not automatically updated from banks or spreadsheets. Export a backup before clearing browser data or switching devices. Calculations are estimates based on your entries, not financial advice.</p></details>
+</main>
+<script>
+const $=id=>document.getElementById(id), KEY='varun-finance-assistant-private-v1';
+const fields=['savings','budget','actual','paid','pending','buffer'];
+const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0);
+const num=id=>Math.max(0,Number($(id).value)||0);
+function snapshot(){return Object.fromEntries(fields.map(k=>[k,num(k)]))}
+function refreshMetrics(){const d=snapshot();$('metricSavings').textContent=money(d.savings);$('metricBudget').textContent=money(d.budget);$('metricPending').textContent=money(d.pending)}
+function save(){localStorage.setItem(KEY,JSON.stringify(snapshot()));refreshMetrics()}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'{}');fields.forEach(k=>$(k).value=d[k]??'');}catch(e){}refreshMetrics()}
+$('saveData').onclick=()=>{save();alert('Snapshot saved in this browser.');};
+fields.forEach(k=>$(k).addEventListener('input',refreshMetrics));
+$('export').onclick=()=>{const blob=new Blob([JSON.stringify({format:'finance-assistant-backup-v1',data:snapshot()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='finance-assistant-backup.json';a.click();URL.revokeObjectURL(a.href)};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const o=JSON.parse(await f.text()),d=o.data||o;if(!fields.every(k=>k in d))throw Error();fields.forEach(k=>$(k).value=Math.max(0,Number(d[k])||0));save();alert('Backup imported.');}catch(err){alert('Could not read that backup file.');}e.target.value='';};
+function calc(){const d=snapshot(),purchase=num('amount'),future=num('future'),reserve=num('reserve');const available=d.savings+future-d.pending-reserve;const after=available-purchase-d.buffer;$('calcResult').innerHTML=`<h3>${after>=0?'Within your entered buffer':'Would exceed your entered buffer'}</h3><p>Available before purchase, after reserves: <b>${money(available)}</b></p><p>After purchase and preserving your buffer: <b>${money(after)}</b></p><p>${after>=0?'Based on the figures entered, the purchase fits.':'The purchase exceeds your buffer by '+money(-after)+'.'} Review your actual balances and commitments before deciding.</p>`}
+$('calc').onclick=calc;
+$('ask').onclick=()=>{const q=$('question').value.trim().toLowerCase(),d=snapshot();if(!q){$('answer').textContent='Enter a question first.';return}
+if(/saving|balance|available/.test(q)){$('answer').innerHTML=`<b>Available savings entered:</b> ${money(d.savings)}. This is your saved figure, not a live bank balance.`;return}
+if(/budget|goal/.test(q)){$('answer').innerHTML=`<b>Budget / goal:</b> ${money(d.budget)}<br><b>Actual expenses:</b> ${money(d.actual)}<br><b>Difference:</b> ${money(d.budget-d.actual)}.`;return}
+if(/pending|unpaid|commitment|outstanding/.test(q)){$('answer').innerHTML=`<b>Unpaid commitments entered:</b> ${money(d.pending)}.`;return}
+if(/spent|expense|paid/.test(q)){$('answer').innerHTML=`<b>Actual expenses entered:</b> ${money(d.actual)}<br><b>Payments made entered:</b> ${money(d.paid)}.`;return}
+const match=q.match(/(?:₹|rs\.?\s*)?(\d[\d,]*(?:\.\d+)?)(\s*(?:k|thousand|lakh|lac))?/i);
+if(/spend|purchase|buy|afford|impact/.test(q)&&match){let amount=Number(match[1].replace(/,/g,''));if(/k|thousand/i.test(match[2]||''))amount*=1000;if(/lakh|lac/i.test(match[2]||''))amount*=100000;const left=d.savings-d.pending-d.buffer-amount;$('answer').innerHTML=`<b>Purchase estimate for ${money(amount)}:</b><br>After your entered unpaid commitments and buffer, estimated remainder is ${money(left)}. ${left>=0?'This fits the figures entered.':'This exceeds the entered amount by '+money(-left)+'.'} Use the calculator above to include additional planned savings or reserves.`;return}
+$('answer').textContent='I can answer questions about the figures you entered. Try: “What is my available savings?”, “How much is pending?”, or “Can I spend ₹25,000?”';};
+$('clear').onclick=()=>{$('question').value='';$('answer').textContent='Ask a question about your entered financial figures.'};
+load();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
