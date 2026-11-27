@@ -1,72 +1,66 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.json">
-<title>Finance Assistant</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.json"><title>Varun Finance Assistant</title>
 <style>
-:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#182230;background:#f5f7fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1050px;margin:auto;padding:20px}.hero{background:#172554;color:white;border-radius:18px;padding:24px}.hero h1{margin:0 0 8px;font-size:26px}.hero p{margin:0;color:#dbeafe}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:16px 0}.card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:17px}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field label{font-size:13px;color:#475569;font-weight:650}input,select,textarea,button{font:inherit;border-radius:9px;padding:10px;border:1px solid #cbd5e1;max-width:100%}input,select,textarea{width:100%}button{background:#1d4ed8;color:white;border:0;font-weight:650;cursor:pointer}button.secondary{background:#e2e8f0;color:#1e293b}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>*{flex:1;min-width:145px}.result{background:#eff6ff;border:1px solid #bfdbfe;padding:14px;border-radius:12px;margin-top:12px}.muted,.notice{color:#64748b}.small,.notice{font-size:12px;line-height:1.5}.metric{font-size:23px;font-weight:750;margin-top:5px}.pill{display:inline-block;background:#e0e7ff;color:#3730a3;padding:4px 9px;border-radius:99px;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:9px;border-bottom:1px solid #e2e8f0;font-size:13px}details{margin-top:12px}@media(max-width:600px){.wrap{padding:12px}.hero h1{font-size:22px}}
-</style></head>
-<body><main class="wrap">
-<header class="hero"><span class="pill">Private • Local-first</span><h1>Finance Assistant</h1><p>Review your savings, plan expenses, and estimate the impact of a purchase.</p></header>
-<section class="grid">
-<div class="card"><div class="muted small">Current available savings (₹)</div><div class="metric" id="metricSavings">₹0</div></div>
-<div class="card"><div class="muted small">Marriage / goal budget (₹)</div><div class="metric" id="metricBudget">₹0</div></div>
-<div class="card"><div class="muted small">Outstanding commitments (₹)</div><div class="metric" id="metricPending">₹0</div></div>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#172033;background:#f4f6fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1100px;margin:auto;padding:18px}.hero{background:#172554;color:#fff;padding:22px;border-radius:18px}.hero h1{margin:0 0 6px;font-size:25px}.hero p{margin:0;color:#dbeafe}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin:14px 0}.metric{font-size:23px;font-weight:750;margin-top:5px}.muted{color:#64748b;font-size:13px}.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end}.field{display:flex;flex-direction:column;gap:6px;margin:8px 0}.field label{font-size:13px;font-weight:650;color:#475569}input,select,button{font:inherit;padding:11px;border:1px solid #cbd5e1;border-radius:9px;width:100%}button{background:#1d4ed8;color:white;border:0;font-weight:700;cursor:pointer}button.secondary{background:#e2e8f0;color:#172033}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.actions button{width:auto}.notice{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:10px;padding:11px;margin-top:10px}.ok{background:#f0fdf4;border-color:#bbf7d0;color:#166534}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:760px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e2e8f0;font-size:13px}th{color:#475569;background:#f8fafc}td.num,th.num{text-align:right}.tag{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:99px;padding:4px 8px;font-size:12px}.tag.saved{background:#dcfce7;color:#166534}.tag.over{background:#fee2e2;color:#991b1b}.small{font-size:12px;color:#64748b}@media(max-width:600px){.wrap{padding:10px}.hero h1{font-size:21px}.metric{font-size:20px}}
+</style></head><body><main class="wrap">
+<header class="hero"><span class="tag">Private · saved on this device</span><h1>Varun Finance Assistant</h1><p>Marriage expenses, payments and monthly savings — in one simple place.</p></header>
+<section class="metrics">
+<div class="card"><div class="muted">Projected budget</div><div class="metric" id="mBudget">₹0</div></div>
+<div class="card"><div class="muted">Actual expenses</div><div class="metric" id="mActual">₹0</div></div>
+<div class="card"><div class="muted">Paid so far</div><div class="metric" id="mPaid">₹0</div></div>
+<div class="card"><div class="muted">Remaining to pay</div><div class="metric" id="mDue">₹0</div></div>
+<div class="card"><div class="muted">Available savings</div><div class="metric" id="mSavings">₹0</div><div class="small" id="savingsNote"></div></div>
+<div class="card"><div class="muted">Budget remaining / (over)</div><div class="metric" id="mLeft">₹0</div></div>
 </section>
-<section class="card">
-<h2>Your financial snapshot</h2><p class="muted small">Enter your own figures. This section is saved only in this browser on this device.</p>
-<div class="row">
-<div class="field"><label for="savings">Available savings (₹)</label><input id="savings" type="number" min="0" step="1" placeholder="Enter current savings"></div>
-<div class="field"><label for="budget">Total budget / goal amount (₹)</label><input id="budget" type="number" min="0" step="1" placeholder="Optional"></div>
-<div class="field"><label for="actual">Actual expenses so far (₹)</label><input id="actual" type="number" min="0" step="1" placeholder="Optional"></div>
-<div class="field"><label for="paid">Payments already made (₹)</label><input id="paid" type="number" min="0" step="1" placeholder="Optional"></div>
-<div class="field"><label for="pending">Unpaid commitments to reserve (₹)</label><input id="pending" type="number" min="0" step="1" placeholder="Optional"></div>
-<div class="field"><label for="buffer">Minimum savings buffer (₹)</label><input id="buffer" type="number" min="0" step="1" placeholder="Optional"></div>
-</div>
-<div class="actions"><button id="saveData">Save snapshot</button><button class="secondary" id="export">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input id="importFile" type="file" accept="application/json" hidden></div>
-<p class="notice">Privacy: this app does not send your figures to a server. However, browser storage is not encrypted, and anyone using the same device/browser profile may be able to access it. Do not enter bank passwords, card numbers, or other credentials.</p>
-</section>
-<section class="card" style="margin-top:16px">
-<h2>Can I afford this purchase?</h2>
-<div class="row">
-<div class="field"><label for="amount">Planned purchase (₹)</label><input id="amount" type="number" min="0" value="0"></div>
-<div class="field"><label for="future">Additional savings before purchase (₹)</label><input id="future" type="number" min="0" value="0"></div>
-<div class="field"><label for="reserve">Other commitments to reserve (₹)</label><input id="reserve" type="number" min="0" value="0"></div>
-</div><button id="calc">Calculate impact</button><div class="result" id="calcResult" aria-live="polite">Enter your figures and calculate.</div>
-</section>
-<section class="card" style="margin-top:16px">
-<h2>Ask your Finance Assistant</h2><p class="muted small">Answers use the figures you entered here. This is a rule-based offline helper, not a full conversational AI or financial adviser.</p>
-<div class="field"><label for="question">Your question</label><textarea id="question" rows="3" placeholder="Example: Can I spend ₹25,000 and still keep my buffer?"></textarea></div>
-<div class="actions"><button id="ask">Ask question</button><button class="secondary" id="clear">Clear</button></div>
-<div class="result" id="answer" aria-live="polite">Try asking about your savings, budget, expenses, pending payments, or a purchase.</div>
-</section>
-<details class="card"><summary><b>How this app works</b></summary><p class="notice">Your figures are stored in local browser storage. They do not sync across devices and are not automatically updated from banks or spreadsheets. Export a backup before clearing browser data or switching devices. Calculations are estimates based on your entries, not financial advice.</p></details>
+<section class="card"><h2 style="margin-top:0">Add a transaction</h2><p class="muted">Enter a payment you have made. It will be added to the selected category’s actual expense and paid amount.</p>
+<form id="txnForm"><div class="row">
+<div class="field"><label for="txnName">Transaction name</label><input id="txnName" required placeholder="e.g. Resort advance payment"></div>
+<div class="field"><label for="txnCategory">Category</label><select id="txnCategory" required></select></div>
+<div class="field"><label for="txnAmount">Amount paid (₹)</label><input id="txnAmount" type="number" min="1" step="1" required placeholder="e.g. 25000"></div>
+</div><div class="actions"><button type="submit">Add transaction</button></div></form><div id="warning" aria-live="polite"></div></section>
+<section class="card"><h2 style="margin-top:0">Expense summary</h2><div class="tablewrap"><table><thead><tr><th>Category</th><th class="num">Budget</th><th class="num">Actual</th><th class="num">Paid</th><th class="num">Remaining</th><th>Paid by</th><th>Actions</th></tr></thead><tbody id="expenseRows"></tbody></table></div></section>
+<section class="card"><h2 style="margin-top:0">Transactions</h2><div class="tablewrap"><table><thead><tr><th>Date</th><th>Transaction</th><th>Category</th><th class="num">Amount paid</th></tr></thead><tbody id="txnRows"></tbody></table></div><p class="small">Transactions are stored in this browser on this device. Export a backup before changing devices or clearing browser data.</p></section>
+<section class="card"><h2 style="margin-top:0">Monthly savings</h2><p>Your current savings start at <b>₹16,88,000</b>. From <b>1 December 2026</b>, the app adds <b>₹50,000</b> for each month on or after the 1st, once when you open the app. If you skip a month, it catches up the missed monthly additions the next time you open it.</p><div class="row"><div><div class="muted">Monthly savings added</div><div class="metric" id="mAdded">₹0</div></div><div><div class="muted">Months counted</div><div class="metric" id="mMonths">0</div></div></div><p class="small">The app cannot update while fully closed. It checks the date when opened. This is a local estimate, not a bank balance.</p></section>
+<section class="card"><h2 style="margin-top:0">Ask Finance</h2><p class="muted">Ask a question about your expenses, payments, budget, or savings. Answers are calculated from the data saved in this app.</p><form id="askForm"><div class="field"><label for="financeQuestion">Your question</label><input id="financeQuestion" required placeholder="e.g. How much savings will remain after all payments?"></div><div class="actions"><button type="submit">Ask</button></div></form><div id="financeAnswer" class="notice" aria-live="polite" hidden></div></section>
+<section class="card"><h2 style="margin-top:0">Backup</h2><div class="actions"><button id="export" type="button">Export backup</button><button id="importBtn" class="secondary" type="button">Import backup</button><input id="importFile" type="file" accept="application/json" hidden></div></section>
+<p class="small">Privacy: figures stay in this browser and are not sent to a server. Browser storage is not encrypted. This app is a budgeting tracker, not financial advice.</p>
 </main>
 <script>
-const $=id=>document.getElementById(id), KEY='varun-finance-assistant-private-v1';
-const fields=['savings','budget','actual','paid','pending','buffer'];
-const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0);
-const num=id=>Math.max(0,Number($(id).value)||0);
-function snapshot(){return Object.fromEntries(fields.map(k=>[k,num(k)]))}
-function refreshMetrics(){const d=snapshot();$('metricSavings').textContent=money(d.savings);$('metricBudget').textContent=money(d.budget);$('metricPending').textContent=money(d.pending)}
-function save(){localStorage.setItem(KEY,JSON.stringify(snapshot()));refreshMetrics()}
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'{}');fields.forEach(k=>$(k).value=d[k]??'');}catch(e){}refreshMetrics()}
-$('saveData').onclick=()=>{save();alert('Snapshot saved in this browser.');};
-fields.forEach(k=>$(k).addEventListener('input',refreshMetrics));
-$('export').onclick=()=>{const blob=new Blob([JSON.stringify({format:'finance-assistant-backup-v1',data:snapshot()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='finance-assistant-backup.json';a.click();URL.revokeObjectURL(a.href)};
-$('importBtn').onclick=()=>$('importFile').click();
-$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const o=JSON.parse(await f.text()),d=o.data||o;if(!fields.every(k=>k in d))throw Error();fields.forEach(k=>$(k).value=Math.max(0,Number(d[k])||0));save();alert('Backup imported.');}catch(err){alert('Could not read that backup file.');}e.target.value='';};
-function calc(){const d=snapshot(),purchase=num('amount'),future=num('future'),reserve=num('reserve');const available=d.savings+future-d.pending-reserve;const after=available-purchase-d.buffer;$('calcResult').innerHTML=`<h3>${after>=0?'Within your entered buffer':'Would exceed your entered buffer'}</h3><p>Available before purchase, after reserves: <b>${money(available)}</b></p><p>After purchase and preserving your buffer: <b>${money(after)}</b></p><p>${after>=0?'Based on the figures entered, the purchase fits.':'The purchase exceeds your buffer by '+money(-after)+'.'} Review your actual balances and commitments before deciding.</p>`}
-$('calc').onclick=calc;
-$('ask').onclick=()=>{const q=$('question').value.trim().toLowerCase(),d=snapshot();if(!q){$('answer').textContent='Enter a question first.';return}
-if(/saving|balance|available/.test(q)){$('answer').innerHTML=`<b>Available savings entered:</b> ${money(d.savings)}. This is your saved figure, not a live bank balance.`;return}
-if(/budget|goal/.test(q)){$('answer').innerHTML=`<b>Budget / goal:</b> ${money(d.budget)}<br><b>Actual expenses:</b> ${money(d.actual)}<br><b>Difference:</b> ${money(d.budget-d.actual)}.`;return}
-if(/pending|unpaid|commitment|outstanding/.test(q)){$('answer').innerHTML=`<b>Unpaid commitments entered:</b> ${money(d.pending)}.`;return}
-if(/spent|expense|paid/.test(q)){$('answer').innerHTML=`<b>Actual expenses entered:</b> ${money(d.actual)}<br><b>Payments made entered:</b> ${money(d.paid)}.`;return}
-const match=q.match(/(?:₹|rs\.?\s*)?(\d[\d,]*(?:\.\d+)?)(\s*(?:k|thousand|lakh|lac))?/i);
-if(/spend|purchase|buy|afford|impact/.test(q)&&match){let amount=Number(match[1].replace(/,/g,''));if(/k|thousand/i.test(match[2]||''))amount*=1000;if(/lakh|lac/i.test(match[2]||''))amount*=100000;const left=d.savings-d.pending-d.buffer-amount;$('answer').innerHTML=`<b>Purchase estimate for ${money(amount)}:</b><br>After your entered unpaid commitments and buffer, estimated remainder is ${money(left)}. ${left>=0?'This fits the figures entered.':'This exceeds the entered amount by '+money(-left)+'.'} Use the calculator above to include additional planned savings or reserves.`;return}
-$('answer').textContent='I can answer questions about the figures you entered. Try: “What is my available savings?”, “How much is pending?”, or “Can I spend ₹25,000?”';};
-$('clear').onclick=()=>{$('question').value='';$('answer').textContent='Ask a question about your entered financial figures.'};
-load();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+const CATS=[
+["Marriage Resort Room and Catering",700000,830000,0,"Anu"],
+["Resort Décor and Lightniing",600000,600000,10000,"Anu"],
+["Shopping Groom",110000,63500,63500,"Anu"],
+["PhotoGrapher",150000,100000,10000,"Anu"],
+["Makeup",15000,15000,0,"Anu"],
+["Cards/Envelops/Thele Printing",5000,5000,3920,"Anu"],
+["Tent & Lightning",50000,50000,0,"Anu"],
+["Lifafes to Relatives",30000,30000,0,"Anu"],
+["Seweet Dabbe",25000,25000,0,"Anu"],
+["Trip Expense",110000,110000,103000,"Anu"],
+["Personal Shopping",50000,50000,25000,"Anu"],
+["Jwellery",1100000,1105000,1105000,"Anu"],
+["Roka",36200,36200,36200,"Anu"]
+];
+const KEY="varun-finance-simple-v2", MONTHLY=50000, STARTING_SAVINGS=1688000, FIRST_SALARY_MONTH="2026-12", $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(Number(n)||0);
+const monthKey=()=>{let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
+let data;
+function fresh(){return {categories:CATS.map((x,i)=>({id:i,name:x[0],budget:x[1],actual:x[2],paid:x[3],paidBy:x[4]})),transactions:[],savings:STARTING_SAVINGS,monthlyMonths:[],savingsBaseSet:true}}
+function load(){try{data=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!data||!Array.isArray(data.categories))data=fresh();data.transactions ||= [];data.monthlyMonths ||= [];if(!data.savingsBaseSet){data.savings=STARTING_SAVINGS;data.monthlyMonths=[];data.savingsBaseSet=true;}data.savings=Number(data.savings)||0;
+let now=monthKey();if(now>=FIRST_SALARY_MONTH){let [y,m]=now.split("-").map(Number);let [fy,fm]=FIRST_SALARY_MONTH.split("-").map(Number);for(let yy=fy;yy<=y;yy++){for(let mm=(yy===fy?fm:1);mm<=(yy===y?m:12);mm++){let key=yy+"-"+String(mm).padStart(2,"0");if(!data.monthlyMonths.includes(key)){data.savings+=MONTHLY;data.monthlyMonths.push(key);}}}}save();render();}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function totals(){return data.categories.reduce((a,c)=>{a.budget+=c.budget;a.actual+=c.actual;a.paid+=c.paid;return a},{budget:0,actual:0,paid:0})}
+function render(){let t=totals();$("mBudget").textContent=money(t.budget);$("mActual").textContent=money(t.actual);$("mPaid").textContent=money(t.paid);$("mDue").textContent=money(t.actual-t.paid);$("mSavings").textContent=money(data.savings);$("savingsNote").textContent="Includes "+money(data.monthlyMonths.length*MONTHLY)+" in monthly additions";$("mLeft").textContent=(t.budget-t.actual>=0?money(t.budget-t.actual):"("+money(t.actual-t.budget)+") over");$("mAdded").textContent=money(data.monthlyMonths.length*MONTHLY);$("mMonths").textContent=data.monthlyMonths.length;
+$("expenseRows").innerHTML=data.categories.map(c=>`<tr><td>${esc(c.name)} ${c.actual>c.budget?`<span class="tag over">Over by ${money(c.actual-c.budget)}</span>`:`<span class="tag saved">Saved ${money(c.budget-c.actual)}</span>`}</td><td class="num">${money(c.budget)}</td><td class="num">${money(c.actual)}</td><td class="num">${money(c.paid)}</td><td class="num">${money(c.actual-c.paid)}</td><td>${esc(c.paidBy)}</td><td><div class="actions"><button type="button" class="secondary" data-edit="${c.id}">Edit</button><button type="button" data-paid="${c.id}">Mark fully paid</button></div></td></tr>`).join("");
+$("txnRows").innerHTML=data.transactions.slice().reverse().map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.name)}</td><td>${esc(x.category)}</td><td class="num">${money(x.amount)}</td></tr>`).join("")||'<tr><td colspan="4">No transactions added yet.</td></tr>';}
+$("expenseRows").addEventListener("click",e=>{const edit=e.target.closest("[data-edit]"),paid=e.target.closest("[data-paid]");if(edit){const c=data.categories.find(x=>x.id===Number(edit.dataset.edit));if(!c)return;const budget=prompt(`Projected budget for ${c.name} (₹):`,c.budget);if(budget===null)return;const actual=prompt(`Final actual expense for ${c.name} (₹):`,c.actual);if(actual===null)return;const paidAmount=prompt(`Total amount paid for ${c.name} (₹):`,c.paid);if(paidAmount===null)return;const b=Number(budget),a=Number(actual),p=Number(paidAmount);if(![b,a,p].every(Number.isFinite)||b<0||a<0||p<0||p>a){alert("Please enter valid non-negative amounts. Paid amount cannot exceed actual expense.");return;}c.budget=b;c.actual=a;c.paid=p;save();render();setWarning(a>b?`Budget warning: “${c.name}” is ${money(a-b)} over its projected budget.`:`Updated. “${c.name}” is ${money(b-a)} under its projected budget.`,a<=b);}else if(paid){const c=data.categories.find(x=>x.id===Number(paid.dataset.paid));if(!c)return;if(confirm(`Mark ${c.name} fully paid? This sets paid amount to ${money(c.actual)} and remaining payment to ₹0.`)){c.paid=c.actual;save();render();setWarning(`${c.name} marked fully paid. Remaining payment is ₹0.`,true);}}});
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function setWarning(msg,ok=false){$("warning").className="notice"+(ok?" ok":"");$("warning").textContent=msg;}
+$("txnCategory").innerHTML=dataCategoryOptions();
+function dataCategoryOptions(){return CATS.map((c,i)=>`<option value="${i}">${esc(c[0])}</option>`).join("")}
+$("txnForm").addEventListener("submit",e=>{e.preventDefault();let i=Number($("txnCategory").value),amount=Math.floor(Number($("txnAmount").value)),name=$("txnName").value.trim();if(!name||!Number.isFinite(amount)||amount<=0)return;let c=data.categories[i];if(!c)return;let before=c.actual;c.actual+=amount;c.paid+=amount;data.transactions.push({date:new Date().toLocaleDateString("en-IN"),name,category:c.name,amount});save();render();let over=c.actual-c.budget;if(over>0)setWarning(`Budget warning: “${c.name}” is now ${money(over)} over its projected budget.`,false);else setWarning(`Transaction added. ${money(c.budget-c.actual)} remains within this category’s projected budget.`,true);$("txnName").value="";$("txnAmount").value="";});
+$("export").onclick=()=>{let b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="varun-finance-backup.json";a.click();URL.revokeObjectURL(a.href)};
+$("importBtn").onclick=()=>$("importFile").click();$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.categories)||!Array.isArray(d.transactions))throw Error();data=d;save();render();alert("Backup imported.");}catch(x){alert("Could not import this backup.");}e.target.value="";};
+$("askForm").addEventListener("submit",e=>{e.preventDefault();const q=$("financeQuestion").value.trim().toLowerCase(),t=totals(),due=t.actual-t.paid,remainingSavings=data.savings-due;let answer="I can answer questions about your current savings, budget, expenses, payments, and categories. Try asking how much you have saved, how much is left to pay, or whether a category is over budget.";const cat=data.categories.find(c=>q.includes(c.name.toLowerCase()));if(cat){answer=`${cat.name}: projected budget ${money(cat.budget)}, actual expense ${money(cat.actual)}, paid ${money(cat.paid)}, and remaining payment ${money(cat.actual-cat.paid)}. ${cat.actual>cat.budget?`It is ${money(cat.actual-cat.budget)} over budget.`:`It is ${money(cat.budget-cat.actual)} under budget.`}`;}else if(q.includes("after")&&(q.includes("payment")||q.includes("expense")||q.includes("pay"))||q.includes("remaining saving")||q.includes("savings after")){answer=`After paying all currently outstanding expenses (${money(due)}), your estimated savings would be ${money(remainingSavings)}.`;}else if(q.includes("saving")||q.includes("balance")||q.includes("salary")){answer=`Your current savings are ${money(data.savings)}. This includes ${money(data.monthlyMonths.length*MONTHLY)} in monthly salary savings added by the app.`;}else if(q.includes("over budget")||q.includes("exceed")){let over=data.categories.filter(c=>c.actual>c.budget);answer=over.length?`Over-budget categories: ${over.map(c=>`${c.name} (${money(c.actual-c.budget)} over)`).join("; ")}.`:`No category is currently over its projected budget.`;}else if(q.includes("remaining")||q.includes("outstanding")||q.includes("due")){answer=`Total outstanding payments are ${money(due)}.`;}else if(q.includes("paid")||q.includes("payment")){answer=`Total paid so far is ${money(t.paid)} across all categories.`;}else if(q.includes("actual")||q.includes("spent")||q.includes("expense")){answer=`Total actual expenses are ${money(t.actual)} against a projected budget of ${money(t.budget)}.`;}else if(q.includes("budget")){answer=`Your total projected budget is ${money(t.budget)}. Actual expenses are ${money(t.actual)}, so you are ${t.actual>t.budget?money(t.actual-t.budget)+" over":money(t.budget-t.actual)+" under"} budget.`;}$("financeAnswer").hidden=false;$("financeAnswer").textContent=answer;});
+load();
 </script></body></html>
